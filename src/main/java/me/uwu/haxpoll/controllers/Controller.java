@@ -12,7 +12,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import me.uwu.haxpoll.HaxPoll;
+import me.uwu.haxpoll.proxy.Checker;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,8 +36,20 @@ public class Controller implements Initializable {
 
     public JFXComboBox comboBox;
 
+    private static Controller instance;
+
+    public static Controller getInstance(){
+        return instance;
+    }
+
+    public HaxPoll getMainThread(){
+        return t;
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        instance = this;
+
         ObservableList<String> options =
                 FXCollections.observableArrayList(
                         "Ip checking",
@@ -85,7 +99,7 @@ public class Controller implements Initializable {
 
     }
 
-    public void run (MouseEvent mouseEvent) throws InterruptedException {
+    public void run (MouseEvent mouseEvent) throws InterruptedException, IOException {
         if (!running) {
             if (comboBox.getValue().equals("Cookies checking") || comboBox.getValue().equals("No checking")) {
                 mainBtn.setStyle("-fx-background-color: #ffb300");
@@ -96,14 +110,30 @@ public class Controller implements Initializable {
                 t.target = Integer.parseInt(quantity.getText());
                 t.boxSlot = String.valueOf(comboSlot.getValue());
                 t.cancel = false;
+                t.secure = false;
                 t.start();
 
+                System.out.println("?");
                 Thread.sleep(500);
                 mainBtn.setStyle("-fx-background-color: #d32f2f");
                 mainBtn.setText("Stop");
             }
-            if (comboBox.getValue().equals("Ip checking"))
-                System.out.println("Unsupported...");
+            if (comboBox.getValue().equals("Ip checking")) {
+                mainBtn.setStyle("-fx-background-color: #ffb300");
+                mainBtn.setText("Starting...");
+                running = true;
+
+                t.url = url.getText();
+                t.target = Integer.parseInt(quantity.getText());
+                t.boxSlot = String.valueOf(comboSlot.getValue());
+                t.cancel = false;
+                t.secure = true;
+
+                Thread.sleep(500);
+                mainBtn.setStyle("-fx-background-color: #d32f2f");
+                mainBtn.setText("Stop");
+                Checker.run(proxyArea.getText(), t);
+            }
         } else {
             mainBtn.setStyle("-fx-background-color: #8700ff");
             mainBtn.setText("Start");

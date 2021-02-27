@@ -11,6 +11,7 @@ public abstract class HaxPoll extends Thread{
     public boolean cancel = false;
     public int target;
     public String boxSlot;
+    public boolean secure;
 
     public List<Thread> threads = new LinkedList<>();
 
@@ -24,7 +25,7 @@ public abstract class HaxPoll extends Thread{
             int next = Math.min(target - count, batchSize);
 
             for (int i = 1; i <= next; i++) {
-                Thread voteThread = new VoteThread(this, count++);
+                Thread voteThread = new VoteThread(this, count++, secure);
                 voteThread.start();
                 threads.add(voteThread);
                 if (cancel) break loop;
@@ -51,7 +52,7 @@ public abstract class HaxPoll extends Thread{
     }
 
     public void retry(int id){
-        Thread t = new VoteThread(this, id);
+        Thread t = new VoteThread(this, id, secure);
         t.start();
         threads.add(t);
     }

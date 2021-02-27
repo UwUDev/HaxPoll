@@ -6,6 +6,7 @@ import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlButton;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.gargoylesoftware.htmlunit.html.HtmlRadioButtonInput;
+import me.uwu.haxpoll.proxy.Checker;
 
 import java.io.IOException;
 
@@ -20,16 +21,28 @@ public class VoteThread extends Thread {
     private final HaxPoll manager;
     private final int count;
 
-    public VoteThread(HaxPoll manager, int count){
+    private boolean secure;
+
+    public VoteThread(HaxPoll manager, int count, boolean secure){
         this.count = count;
         this.manager = manager;
+        this.secure = secure;
     }
 
     @Override
     public void run() {
         if(this.isInterrupted()) return;
 
-        try (final WebClient webClient = new WebClient(browser, false, (String) null, -1)) {
+        String ip = (String) null;
+        int port = -1;
+
+        if (secure){
+            ip = Checker.working.get(count);
+            port = Integer.parseInt(ip.split(":")[1]);
+            ip = ip.split(":")[0];
+        }
+
+        try (final WebClient webClient = new WebClient(browser, false, ip, port)) {
 
             final HtmlPage page1 = webClient.getPage(manager.url);
 
@@ -38,6 +51,8 @@ public class VoteThread extends Thread {
 
             button.click();
             final UnexpectedPage page2 = button2.click();
+
+            Checker.working.remove(count);
 
             if(page2.getWebResponse().getStatusCode() == 200 && page2.getWebResponse().getContentAsString().contains("\"success\":\"success\"")) {
                 System.out.println("Vote #" + count + " counted !");
