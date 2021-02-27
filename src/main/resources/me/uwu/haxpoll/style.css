@@ -1,0 +1,24 @@
+.jfx-text-field, .jfx-password-field, .jfx-text-area, .jfx-combo-box {
+    -fx-prompt-text-fill: GREY;
+    -fx-text-fill: WHITE;
+}
+
+.jfx-combo-box {
+    -fx-text-inner-color: WHITE;
+    -fx-prompt-text-fill: WHITE;
+    -fx-border-width: 0;
+}
+
+.jfx-combo-box .cell {
+    -fx-text-fill: WHITE;
+    -fx-background-color: #000;
+    -fx-border-width: 0;
+    -fx-border-color: #000;
+}
+
+.jfx-combo-box .cell:hover {
+    -fx-text-fill: WHITE;
+    -fx-background-color: #4d4d4d;
+    -fx-border-width: 0;
+    -fx-border-color: #4d4d4d;
+}

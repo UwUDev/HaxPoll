@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXTextArea?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="300.0" style="-fx-background-color: #000;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="me.uwu.haxpoll.controllers.Controller">
+   <children>
+      <JFXTextField fx:id="url" alignment="CENTER" focusColor="#8700ff" layoutX="28.0" layoutY="89.0" prefHeight="39.0" prefWidth="243.0" promptText="Enter poll url..." />
+      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="63.0" layoutY="14.0" prefHeight="75.0" prefWidth="173.0" text="HaxPoll" textAlignment="CENTER" textFill="WHITE">
+         <font>
+            <Font name="Consolas" size="32.0" />
+         </font>
+      </Label>
+      <JFXComboBox fx:id="comboBox" focusColor="#8700ff" layoutX="63.0" layoutY="206.0" onAction="#modeChanged" prefHeight="30.0" prefWidth="174.0" style="-fx-text-fill: #fff;" />
+      <JFXButton fx:id="mainBtn" layoutX="78.0" layoutY="434.0" onMouseClicked="#run" prefHeight="54.0" prefWidth="144.0" style="-fx-background-color: #8700ff;" text="Start" textFill="WHITE">
+         <font>
+            <Font name="Consolas" size="24.0" />
+         </font>
+      </JFXButton>
+      <Label fx:id="stats" alignment="CENTER" layoutY="249.0" prefHeight="18.0" prefWidth="300.0" text="Stats" textFill="WHITE">
+         <font>
+            <Font name="Consolas" size="12.0" />
+         </font>
+      </Label>
+      <JFXTextArea fx:id="proxyArea" disable="true" focusColor="#8700ff" layoutX="28.0" layoutY="324.0" prefHeight="89.0" prefWidth="243.0" />
+      <Label fx:id="proxyLabel" alignment="CENTER" layoutY="281.0" prefHeight="18.0" prefWidth="300.0" text="Proxies disabled" textFill="WHITE">
+         <font>
+            <Font name="Consolas" size="12.0" />
+         </font>
+      </Label>
+      <JFXTextField fx:id="quantity" alignment="CENTER" focusColor="#8700ff" layoutX="63.0" layoutY="162.0" prefHeight="26.0" prefWidth="83.0" promptText="vote quantity">
+         <font>
+            <Font name="Consolas" size="12.0" />
+         </font>
+      </JFXTextField>
+      <JFXComboBox fx:id="comboSlot" focusColor="#8700ff" layoutX="166.0" layoutY="157.0" onAction="#modeChanged" prefHeight="26.0" prefWidth="70.0" style="-fx-text-fill: #fff;" />
+   </children>
+</AnchorPane>
