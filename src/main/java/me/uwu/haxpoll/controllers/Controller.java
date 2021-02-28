@@ -10,7 +10,9 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 import me.uwu.haxpoll.HaxPoll;
 import me.uwu.haxpoll.proxy.Checker;
 
@@ -29,6 +31,7 @@ public class Controller implements Initializable {
     public JFXTextField url;
     public JFXTextField quantity;
     public JFXComboBox comboSlot;
+    public Label errorStaus;
     private boolean running = false;
     private HaxPoll t;
 
@@ -49,6 +52,7 @@ public class Controller implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         instance = this;
+        errorStaus.setText("");
 
         ObservableList<String> options =
                 FXCollections.observableArrayList(
@@ -101,38 +105,40 @@ public class Controller implements Initializable {
 
     public void run (MouseEvent mouseEvent) throws InterruptedException, IOException {
         if (!running) {
-            if (comboBox.getValue().equals("Cookies checking") || comboBox.getValue().equals("No checking")) {
-                mainBtn.setStyle("-fx-background-color: #ffb300");
-                mainBtn.setText("Starting...");
-                running = true;
+            if (checkFields()) {
+                if (comboBox.getValue().equals("Cookies checking") || comboBox.getValue().equals("No checking")) {
+                    mainBtn.setStyle("-fx-background-color: #d32f2f");
+                    mainBtn.setText("Error");
+                    running = true;
 
-                t.url = url.getText();
-                t.target = Integer.parseInt(quantity.getText());
-                t.boxSlot = String.valueOf(comboSlot.getValue());
-                t.cancel = false;
-                t.secure = false;
-                t.start();
+                    t.url = url.getText();
+                    t.target = Integer.parseInt(quantity.getText());
+                    t.boxSlot = String.valueOf(comboSlot.getValue());
+                    t.cancel = false;
+                    t.secure = false;
+                    t.start();
 
-                System.out.println("?");
-                Thread.sleep(500);
-                mainBtn.setStyle("-fx-background-color: #d32f2f");
-                mainBtn.setText("Stop");
-            }
-            if (comboBox.getValue().equals("Ip checking")) {
-                mainBtn.setStyle("-fx-background-color: #ffb300");
-                mainBtn.setText("Starting...");
-                running = true;
+                    System.out.println("?");
+                    Thread.sleep(500);
+                    mainBtn.setStyle("-fx-background-color: #ffb300");
+                    mainBtn.setText("Stop");
+                }
+                if (comboBox.getValue().equals("Ip checking")) {
+                    mainBtn.setStyle("-fx-background-color: #d32f2f");
+                    mainBtn.setText("Error");
+                    running = true;
 
-                t.url = url.getText();
-                t.target = Integer.parseInt(quantity.getText());
-                t.boxSlot = String.valueOf(comboSlot.getValue());
-                t.cancel = false;
-                t.secure = true;
+                    t.url = url.getText();
+                    t.target = Integer.parseInt(quantity.getText());
+                    t.boxSlot = String.valueOf(comboSlot.getValue());
+                    t.cancel = false;
+                    t.secure = true;
 
-                Thread.sleep(500);
-                mainBtn.setStyle("-fx-background-color: #d32f2f");
-                mainBtn.setText("Stop");
-                Checker.run(proxyArea.getText(), t);
+                    Thread.sleep(500);
+                    mainBtn.setStyle("-fx-background-color: #ffb300");
+                    mainBtn.setText("Stop");
+                    Checker.run(proxyArea.getText(), t);
+                }
             }
         } else {
             mainBtn.setStyle("-fx-background-color: #8700ff");
@@ -148,5 +154,48 @@ public class Controller implements Initializable {
 
     private void updateStats(){
         Platform.runLater(() -> this.stats.setText("Good: " + good.get() + " / Errors: " + error.get()));
+    }
+
+    private boolean checkFields(){
+        boolean status = true;
+        if (quantity.getText().isEmpty()) {
+            quantity.setFocusColor(Color.web("#d32f2f"));
+            errorStaus.setText("Empty quantity");
+            status = false;
+            quantity.requestFocus();
+        } else try { Integer.parseInt(quantity.getText()); }
+        catch (Exception ignored) {
+            quantity.setFocusColor(Color.web("#d32f2f"));
+            errorStaus.setText("Invalid quantity");
+            status = false;
+            quantity.requestFocus();
+        }
+
+        if (url.getText().isEmpty()) {
+            errorStaus.setText("Empty URL");
+            status = false;
+            url.setStyle("-jfx-focus-color: #d32f2f");
+            url.requestFocus();
+        } else if (!url.getText().startsWith("http")){
+            errorStaus.setText("Not an URL");
+            status = false;
+            url.setStyle("-jfx-focus-color: #d32f2f");
+            url.requestFocus();
+        }else if (!(url.getText().startsWith("https://www.strawpoll.me/") || url.getText().startsWith("http://www.strawpoll.me/"))){
+            errorStaus.setText("Unsupported URL");
+            status = false;
+            url.setStyle("-jfx-focus-color: #d32f2f");
+            url.requestFocus();
+        }
+
+        return status;
+    }
+
+    public void updateURLColor(KeyEvent keyEvent) {
+        url.setStyle("-jfx-focus-color: #8700ff");
+    }
+
+    public void updateQuantityColor(KeyEvent keyEvent) {
+        quantity.setFocusColor(Color.web("#8700ff"));
     }
 }

@@ -10,7 +10,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="300.0" style="-fx-background-color: #000;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="me.uwu.haxpoll.controllers.Controller">
    <children>
-      <JFXTextField fx:id="url" alignment="CENTER" focusColor="#8700ff" layoutX="28.0" layoutY="89.0" prefHeight="39.0" prefWidth="243.0" promptText="Enter poll url..." />
+      <JFXTextField fx:id="url" onKeyTyped="#updateURLColor" alignment="CENTER" focusColor="#8700ff" layoutX="28.0" layoutY="93.0" prefHeight="39.0" prefWidth="243.0" promptText="Enter poll url..." />
       <Label alignment="CENTER" contentDisplay="CENTER" layoutX="63.0" layoutY="14.0" prefHeight="75.0" prefWidth="173.0" text="HaxPoll" textAlignment="CENTER" textFill="WHITE">
          <font>
             <Font name="Consolas" size="32.0" />
@@ -33,11 +33,16 @@
             <Font name="Consolas" size="12.0" />
          </font>
       </Label>
-      <JFXTextField fx:id="quantity" alignment="CENTER" focusColor="#8700ff" layoutX="63.0" layoutY="162.0" prefHeight="26.0" prefWidth="83.0" promptText="vote quantity">
+      <JFXTextField fx:id="quantity" onKeyTyped="#updateQuantityColor" alignment="CENTER" focusColor="#8700ff" layoutX="63.0" layoutY="162.0" prefHeight="26.0" prefWidth="83.0" promptText="vote quantity">
          <font>
             <Font name="Consolas" size="12.0" />
          </font>
       </JFXTextField>
       <JFXComboBox fx:id="comboSlot" focusColor="#8700ff" layoutX="166.0" layoutY="157.0" onAction="#modeChanged" prefHeight="26.0" prefWidth="70.0" style="-fx-text-fill: #fff;" />
+      <Label fx:id="errorStaus" alignment="CENTER" layoutY="78.0" prefHeight="18.0" prefWidth="300.0" text="Error status" textFill="#d32f2f">
+         <font>
+            <Font name="Consolas" size="12.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>
