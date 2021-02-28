@@ -52,7 +52,8 @@ public class VoteThread extends Thread {
             button.click();
             final UnexpectedPage page2 = button2.click();
 
-            Checker.working.remove(count);
+            if (secure)
+                Checker.working.remove(count);
 
             if(page2.getWebResponse().getStatusCode() == 200 && page2.getWebResponse().getContentAsString().contains("\"success\":\"success\"")) {
                 System.out.println("Vote #" + count + " counted !");

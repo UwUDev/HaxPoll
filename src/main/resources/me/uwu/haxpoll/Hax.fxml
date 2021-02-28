@@ -17,7 +17,7 @@
          </font>
       </Label>
       <JFXComboBox fx:id="comboBox" focusColor="#8700ff" layoutX="63.0" layoutY="206.0" onAction="#modeChanged" prefHeight="30.0" prefWidth="174.0" style="-fx-text-fill: #fff;" />
-      <JFXButton fx:id="mainBtn" layoutX="78.0" layoutY="434.0" onMouseClicked="#run" prefHeight="54.0" prefWidth="144.0" style="-fx-background-color: #8700ff;" text="Start" textFill="WHITE">
+      <JFXButton fx:id="mainBtn" layoutX="78.0" layoutY="434.0" onMouseClicked="#startHaxxing" prefHeight="54.0" prefWidth="144.0" style="-fx-background-color: #8700ff;" text="Start" textFill="WHITE">
          <font>
             <Font name="Consolas" size="24.0" />
          </font>

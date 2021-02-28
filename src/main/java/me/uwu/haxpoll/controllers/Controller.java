@@ -72,24 +72,7 @@ public class Controller implements Initializable {
         comboSlot.setItems(options2);
         comboSlot.setValue("1");
 
-        t = new HaxPoll(){
-            @Override
-            public void updateStats(boolean error) {
-                if(error){
-                    Controller.this.error.getAndIncrement();
-                }else{
-                    Controller.this.good.getAndIncrement();
-                }
-
-                Controller.this.updateStats();
-            }
-
-            @Override
-            public void finishCallback() {
-                mainBtn.setStyle("-fx-background-color: #8700ff");
-                mainBtn.setText("Start");
-            }
-        };
+        resetThread();
     }
 
     public void modeChanged(ActionEvent actionEvent) {
@@ -100,16 +83,21 @@ public class Controller implements Initializable {
             proxyLabel.setText("Proxies disabled");
             proxyArea.setDisable(true);
         }
-
     }
 
-    public void run (MouseEvent mouseEvent) throws InterruptedException, IOException {
+    public void run(MouseEvent mouseEvent) throws InterruptedException, IOException {
+        startHaxxing();
+    }
+
+    public void startHaxxing() throws InterruptedException, IOException {
         if (!running) {
             if (checkFields()) {
                 if (comboBox.getValue().equals("Cookies checking") || comboBox.getValue().equals("No checking")) {
                     mainBtn.setStyle("-fx-background-color: #d32f2f");
                     mainBtn.setText("Error");
                     running = true;
+
+                    resetThread();
 
                     t.url = url.getText();
                     t.target = Integer.parseInt(quantity.getText());
@@ -197,5 +185,29 @@ public class Controller implements Initializable {
 
     public void updateQuantityColor(KeyEvent keyEvent) {
         quantity.setFocusColor(Color.web("#8700ff"));
+    }
+
+    public void resetThread(){
+        t = new HaxPoll() {
+            @Override
+            public void finishCallback() {
+                try {
+                    startHaxxing();
+                } catch (InterruptedException | IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void updateStats(boolean error) {
+                if (error) {
+                    Controller.this.error.getAndIncrement();
+                } else {
+                    Controller.this.good.getAndIncrement();
+                }
+
+                Controller.this.updateStats();
+            }
+        };
     }
 }
